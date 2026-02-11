@@ -1,0 +1,86 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"8039e1aa-3cf1-4da6-86d9-6cc4a631c525\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/app/(root)/watchlist/page.tsx\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/components/WatchlistTable.tsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/app/(root)/stocks/[symbol]/page.tsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/(root)/stocks/[symbol]/page.tsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/components/SearchCommand.tsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/components/SearchCommand.tsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/components/WatchlistButton.tsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/components/WatchlistButton.tsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/lib/actions/finnhub.actions.ts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/lib/actions/finnhub.actions.ts\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/lib/actions/watchlist.actions.ts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/lib/actions/watchlist.actions.ts\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/lib/constants.ts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/lib/constants.ts\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package-lock.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/package-lock.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/package.json\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"EmbeddingIndexingInfo\">\r\n    <option name=\"cachedIndexableFilesCount\" value=\"76\" />\r\n    <option name=\"fileBasedEmbeddingIndicesEnabled\" value=\"true\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;Sipisak&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/Sipisak/signalist_stock-tracker-app.git&quot;,\r\n    &quot;accountId&quot;: &quot;7fd6e4f8-fdfc-4d2a-9650-7e8faeab604d&quot;\r\n  }\r\n}</component>\r\n  <component name=\"KubernetesApiPersistence\">{}</component>\r\n  <component name=\"KubernetesApiProvider\">{\r\n  &quot;isMigrated&quot;: true\r\n}</component>\r\n  <component name=\"McpProjectServerCommands\">\r\n    <commands />\r\n    <urls />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 5\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"31uCrz4dzTqWCSYXKsh1q8Vvrgp\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showExcludedFiles\" value=\"false\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n    <option name=\"showScratchesAndConsoles\" value=\"false\" />\r\n    <option name=\"sortKey\" value=\"BY_TIME_DESCENDING\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\r\n    \"RunOnceActivity.MCP Project settings loaded\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager\": \"true\",\r\n    \"RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252\": \"true\",\r\n    \"RunOnceActivity.git.unshallow\": \"true\",\r\n    \"RunOnceActivity.typescript.service.memoryLimit.init\": \"true\",\r\n    \"com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"ignore.virus.scanning.warn.message\": \"true\",\r\n    \"javascript.preferred.runtime.type.id\": \"node\",\r\n    \"js.debugger.nextJs.config.created.client\": \"true\",\r\n    \"js.debugger.nextJs.config.created.server\": \"true\",\r\n    \"junie.onboarding.icon.badge.shown\": \"true\",\r\n    \"last_opened_file_path\": \"/Users/adrianhajdin/Desktop/stocks_app\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_interpreter_path\": \"node\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"npm.Next.js: server-side.executor\": \"Run\",\r\n    \"npm.test:db.executor\": \"Run\",\r\n    \"npm.types:watch.executor\": \"Run\",\r\n    \"settings.editor.selected.configurable\": \"preferences.pluginManager\",\r\n    \"to.speed.mode.migration.done\": \"true\",\r\n    \"ts.external.directory.path\": \"C:\\\\Users\\\\m.sipek\\\\WebstormProjects\\\\signalist_stock-tracker-app\\\\node_modules\\\\typescript\\\\lib\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"$PROJECT_DIR$/app\" />\r\n      <recent name=\"$PROJECT_DIR$\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"npm.Next.js: server-side\">\r\n    <configuration name=\"Next.js: debug client-side\" type=\"JavascriptDebugType\" uri=\"http://localhost:3000/\">\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"Next.js: server-side\" type=\"js.build_tools.npm\">\r\n      <package-json value=\"$PROJECT_DIR$/package.json\" />\r\n      <command value=\"run\" />\r\n      <scripts>\r\n        <script value=\"dev\" />\r\n      </scripts>\r\n      <node-interpreter value=\"project\" />\r\n      <envs />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"test:db\" type=\"js.build_tools.npm\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <package-json value=\"$PROJECT_DIR$/package.json\" />\r\n      <command value=\"run\" />\r\n      <scripts>\r\n        <script value=\"test:db\" />\r\n      </scripts>\r\n      <node-interpreter value=\"project\" />\r\n      <envs />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"types:watch\" type=\"js.build_tools.npm\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <package-json value=\"$PROJECT_DIR$/package.json\" />\r\n      <command value=\"run\" />\r\n      <scripts>\r\n        <script value=\"types:watch\" />\r\n      </scripts>\r\n      <node-interpreter value=\"project\" />\r\n      <envs />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"npm.types:watch\" />\r\n        <item itemvalue=\"npm.test:db\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.30387.83\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"8039e1aa-3cf1-4da6-86d9-6cc4a631c525\" name=\"Changes\" comment=\"\" />\r\n      <created>1756364772411</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1756364772411</updated>\r\n      <workItem from=\"1756364773427\" duration=\"2148000\" />\r\n      <workItem from=\"1756366968623\" duration=\"33000\" />\r\n      <workItem from=\"1756729429235\" duration=\"3247000\" />\r\n      <workItem from=\"1757758446589\" duration=\"6500000\" />\r\n      <workItem from=\"1757793249623\" duration=\"9382000\" />\r\n      <workItem from=\"1770632206043\" duration=\"917000\" />\r\n      <workItem from=\"1770633201623\" duration=\"1111000\" />\r\n      <workItem from=\"1770708191251\" duration=\"10079000\" />\r\n      <workItem from=\"1770721260578\" duration=\"41000\" />\r\n      <workItem from=\"1770795117739\" duration=\"4984000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n    <option name=\"exactExcludedFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/scripts/test-db.mjs\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"UnknownFeatures\">\r\n    <option featureType=\"com.intellij.fileTypeFactory\" implementationName=\".env\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"OPEN_GENERIC_TABS\">\r\n      <map>\r\n        <entry key=\"eb4946b4-6980-411a-b241-75e281a9a992\" value=\"TOOL_WINDOW\" />\r\n        <entry key=\"c221ffc6-5770-4a84-8e32-cfeafffbc434\" value=\"TOOL_WINDOW\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"homepage\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n        <entry key=\"c221ffc6-5770-4a84-8e32-cfeafffbc434\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n        <entry key=\"eb4946b4-6980-411a-b241-75e281a9a992\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision c02a9504d708097caaafdea895332a7d5ac661c5)
++++ b/.idea/workspace.xml	(date 1770802448147)
+@@ -4,18 +4,8 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="8039e1aa-3cf1-4da6-86d9-6cc4a631c525" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/app/(root)/watchlist/page.tsx" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/components/WatchlistTable.tsx" afterDir="false" />
++    <list default="true" id="8039e1aa-3cf1-4da6-86d9-6cc4a631c525" name="Changes" comment="watchlist">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/(root)/stocks/[symbol]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(root)/stocks/[symbol]/page.tsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/components/SearchCommand.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SearchCommand.tsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/components/WatchlistButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/WatchlistButton.tsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/lib/actions/finnhub.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions/finnhub.actions.ts" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/lib/actions/watchlist.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions/watchlist.actions.ts" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/lib/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants.ts" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -35,12 +25,12 @@
+     &quot;assignee&quot;: &quot;Sipisak&quot;
+   }
+ }</component>
+-  <component name="GithubPullRequestsUISettings">{
+-  &quot;selectedUrlAndAccountId&quot;: {
+-    &quot;url&quot;: &quot;https://github.com/Sipisak/signalist_stock-tracker-app.git&quot;,
+-    &quot;accountId&quot;: &quot;7fd6e4f8-fdfc-4d2a-9650-7e8faeab604d&quot;
+-  }
+-}</component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/Sipisak/stock-tracker-app",
++    "accountId": "7fd6e4f8-fdfc-4d2a-9650-7e8faeab604d"
++  }
++}]]></component>
+   <component name="KubernetesApiPersistence">{}</component>
+   <component name="KubernetesApiProvider">{
+   &quot;isMigrated&quot;: true
+@@ -168,8 +158,25 @@
+       <workItem from="1770633201623" duration="1111000" />
+       <workItem from="1770708191251" duration="10079000" />
+       <workItem from="1770721260578" duration="41000" />
+-      <workItem from="1770795117739" duration="4984000" />
++      <workItem from="1770795117739" duration="5608000" />
+     </task>
++    <task id="LOCAL-00001" summary="watchlist">
++      <option name="closed" value="true" />
++      <created>1770801891831</created>
++      <option name="number" value="00001" />
++      <option name="presentableId" value="LOCAL-00001" />
++      <option name="project" value="LOCAL" />
++      <updated>1770801891832</updated>
++    </task>
++    <task id="LOCAL-00002" summary="watchlist">
++      <option name="closed" value="true" />
++      <created>1770802072215</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1770802072215</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -222,4 +229,8 @@
+       </map>
+     </option>
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="watchlist" />
++    <option name="LAST_COMMIT_MESSAGE" value="watchlist" />
++  </component>
+ </project>
+\ No newline at end of file
