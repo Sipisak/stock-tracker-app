@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import InputField from '@/components/forms/InputField';
 import FooterLink from '@/components/forms/FooterLink';
 import {signInWithEmail, signUpWithEmail} from "@/lib/actions/auth.actions";
+import Link from "next/link";
 import {toast} from "sonner";
 import {signInEmail} from "better-auth/api";
 import {useRouter} from "next/navigation";
@@ -26,7 +27,11 @@ const SignIn = () => {
     const onSubmit = async (data: SignInFormData) => {
         try {
             const result = await signInWithEmail(data);
-            if(result.success) router.push('/');
+            if (result.success) {
+                router.push('/');
+            } else if (result.error) {
+                toast.error('Sign in failed', { description: result.error });
+            }
         } catch (e) {
             console.error(e);
             toast.error('Sign in failed', {
@@ -49,17 +54,24 @@ const SignIn = () => {
                     validation={{ required: 'Email is required', pattern: /^\w+@\w+\.\w+$/ }}
                 />
 
-                <InputField
-                    name="password"
-                    label="Password"
-                    placeholder="Enter your password"
-                    type="password"
-                    register={register}
-                    error={errors.password}
-                    validation={{ required: 'Password is required', minLength: 8 }}
-                />
+                <div className="space-y-2">
+                    <InputField
+                        name="password"
+                        label="Password"
+                        placeholder="Enter your password"
+                        type="password"
+                        register={register}
+                        error={errors.password}
+                        validation={{ required: 'Password is required', minLength: 8 }}
+                    />
+                    <div className="text-right">
+                        <Link href="/forgot-password" className="text-sm font-medium text-yellow-400 hover:text-yellow-500 hover:underline">
+                            Forgot password?
+                        </Link>
+                    </div>
+                </div>
 
-                <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
+                <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full">
                     {isSubmitting ? 'Signing In' : 'Sign In'}
                 </Button>
 

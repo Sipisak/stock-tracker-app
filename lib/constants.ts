@@ -26,14 +26,20 @@ export const PREFERRED_INDUSTRIES = [
     { value: 'Consumer Goods', label: 'Consumer Goods' },
 ];
 
-export const ALERT_TYPE_OPTIONS = [
+export const PRICE_CONDITION_OPTIONS = [
     { value: 'upper', label: 'Upper' },
     { value: 'lower', label: 'Lower' },
 ];
 
 export const CONDITION_OPTIONS = [
-    { value: 'greater', label: 'Greater than (>)' },
-    { value: 'less', label: 'Less than (<)' },
+    { value: 'upper', label: 'Rises Above' },
+    { value: 'lower', label: 'Drops Below' },
+];
+
+export const ALERT_TYPE_OPTIONS = [
+    { value: 'price', label: 'Price' },
+    { value: 'percent', label: 'Percentage' },
+    { value: 'volume', label: 'Volume' },
 ];
 
 // TradingView Charts

@@ -18,7 +18,11 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
         return { success: true, data: response }
     } catch (e) {
         console.log('Sign up failed', e)
-        return { success: false, error: 'Sign up failed' }
+        if (e instanceof Error && (e.message.includes('User with this email already exists') || e.message.includes('User already exists'))) {
+            return { success: false, error: 'A user with this email already exists.' };
+        }
+
+        return { success: false, error: 'An unknown error occurred during sign up.' }
     }
 }
 
@@ -29,7 +33,11 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
         return { success: true, data: response }
     } catch (e) {
         console.log('Sign in failed', e)
-        return { success: false, error: 'Sign in failed' }
+        if (e instanceof Error && e.message.includes('Invalid credentials')) {
+            return { success: false, error: 'Invalid email or password. Please try again.' };
+        }
+
+        return { success: false, error: 'An unknown error occurred during sign in.' }
     }
 }
 
@@ -39,5 +47,17 @@ export const signOut = async () => {
     } catch (e) {
         console.log('Sign out failed', e)
         return { success: false, error: 'Sign out failed' }
+    }
+}
+
+export const sendPasswordResetEmail = async (email: string) => {
+    try {
+        await auth.api.sendPasswordResetEmail({ body: { email } });
+        return { success: true };
+    } catch (e) {
+        console.error('Failed to send password reset email', e);
+        // For security, we don't want to reveal if an email is registered or not.
+        // So we return a generic success-like message.
+        return { success: true };
     }
 }
