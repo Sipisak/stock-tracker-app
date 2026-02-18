@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { IAlert } from '@/database/models/alert.model';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -125,9 +126,19 @@ export const formatDateToday = new Date().toLocaleDateString('en-US', {
 });
 
 
-export const getAlertText = (alert: Alert) => {
-  const condition = alert.alertType === 'upper' ? '>' : '<';
-  return `Price ${condition} ${formatPrice(alert.threshold)}`;
+export const getAlertText = (alert: IAlert) => {
+  const conditionText = alert.condition === 'upper' ? 'goes above' : 'drops below';
+  switch (alert.alertType) {
+    case 'price':
+      return `Price ${conditionText} ${formatPrice(alert.threshold)}`;
+    case 'percent':
+      return `Change ${conditionText} ${alert.threshold}%`;
+    case 'volume':
+      // Assuming volume is in millions
+      return `Volume ${conditionText} ${alert.threshold}M`;
+    default:
+      return 'Alert condition not set';
+  }
 };
 
 export const getFormattedTodayDate = () => new Date().toLocaleDateString('en-US', {

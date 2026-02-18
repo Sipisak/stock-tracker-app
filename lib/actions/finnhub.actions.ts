@@ -33,9 +33,9 @@ async function fetchJSON<T>(url: string, revalidateSeconds?: number): Promise<T>
 
 export { fetchJSON };
 
-export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> {
+export async function getNews(symbols?: string[], days: number = 5): Promise<MarketNewsArticle[]> {
   try {
-    const range = getDateRange(5);
+    const range = getDateRange(days);
     const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
     if (!token) {
       throw new Error('FINNHUB API key is not configured');
