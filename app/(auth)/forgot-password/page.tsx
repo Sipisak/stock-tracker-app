@@ -26,16 +26,9 @@ const ForgotPassword = () => {
     });
 
     const onSubmit = async (data: ForgotPasswordFormData) => {
-        try {
-            await sendPasswordResetEmail(data.email);
-            toast.success('If an account with this email exists, a reset link has been sent.');
-            setSubmitted(true);
-        } catch (e) {
-            console.error(e);
-            toast.error('Failed to send reset email.', {
-                description: e instanceof Error ? e.message : 'An unexpected error occurred.'
-            })
-        }
+        await sendPasswordResetEmail(data.email);
+        toast.success('If an account with this email exists, a reset link has been sent.');
+        setSubmitted(true);
     }
 
     if (submitted) {

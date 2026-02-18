@@ -7,7 +7,7 @@ export interface IAlertEvent {
     userId: string;
 
     symbol: string;
-    condition: "ABOVE" | "BELOW";
+    condition: "upper" | "lower";
     threshold: number;
 
     triggerPrice: number;
@@ -22,11 +22,11 @@ export interface IAlertEvent {
 
 const AlertEventSchema = new Schema<IAlertEvent>(
     {
-        ruleId: { type: Schema.Types.ObjectId, ref: "AlertRule", required: true, index: true },
+        ruleId: { type: Schema.Types.ObjectId, ref: "Alert", required: true, index: true },
         userId: { type: String, required: true, index: true },
 
         symbol: { type: String, required: true, uppercase: true, trim: true, index: true },
-        condition: { type: String, required: true, enum: ["ABOVE", "BELOW"] },
+        condition: { type: String, required: true, enum: ["upper", "lower"] },
         threshold: { type: Number, required: true },
 
         triggerPrice: { type: Number, required: true },

@@ -8,9 +8,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 export const createAlert = async (data: AlertFormData & {symbol :string; company: string; }) => {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (!session?.user) redirect('/sign-in');
     try {
-        const session = await auth.api.getSession({ headers: await headers() });
-        if (!session?.user) redirect('/sign-in');
 
         await connectToDatabase();
 
@@ -47,9 +47,9 @@ export const getAlertsForUser = async (): Promise<IAlert[]> => {
 };
 
 export const deleteAlert = async (alertId: string) => {
+    const session = await auth.api.getSession({ headers: await headers() });
+    if (!session?.user) redirect('/sign-in');
     try {
-        const session = await auth.api.getSession({ headers: await headers() });
-        if (!session?.user) redirect('/sign-in');
 
         await connectToDatabase();
 
