@@ -48,17 +48,10 @@ const AddAlertDialog = ({
                 company,
             };
 
-            const result = await createAlert(alertData);
-
-            if (result.success) {
-                toast.success('Alert created successfully!');
-                setOpen(false);
-                reset();
-            } else {
-                toast.error('Failed to create alert', {
-                    description: result.error,
-                });
-            }
+            await createAlert(alertData);
+            toast.success('Alert created successfully!');
+            setOpen(false);
+            reset();
         } catch (e) {
             console.error(e);
             toast.error('Failed to create alert', {

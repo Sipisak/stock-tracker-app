@@ -9,7 +9,7 @@
 type SignUpFormData = {
     fullName: string;
     email: string;
-    password?: string;
+    password: string;
     country: string;
     investmentGoals: string;
     riskTolerance: string;
@@ -18,13 +18,13 @@ type SignUpFormData = {
 
 type SignInFormData = {
     email: string;
-    password?: string;
+    password: string;
 };
 
 type AlertFormData = {
     alertType: 'price' | 'percent' | 'volume';
     condition: 'upper' | 'lower';
-    threshold: number;
+    threshold: string; // Comes as string from form input
 };
 
 // ====== COMPONENT PROPS ======
