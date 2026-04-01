@@ -1,0 +1,30 @@
+import type { AlertCondition } from "@/database/models/alert.model";
+
+export function didCrossThreshold(params: {
+    condition: AlertCondition; // "upper" | "lower" (or ABOVE/BELOW if you use that)
+    prev: number | null | undefined;
+    current: number;
+    threshold: number;
+}): boolean {
+    const { condition, prev, current, threshold } = params;
+
+    // First tick: no previous value => don't trigger (avoids false positives)
+    if (prev === null || prev === undefined) return false;
+
+    if (condition === "upper") {
+        return prev <= threshold && current > threshold;
+    }
+    // "lower" / BELOW
+    return prev >= threshold && current < threshold;
+}
+
+export function isCooldownOver(params: {
+    lastTriggeredAt?: Date | null;
+    cooldownMinutes: number;
+    now: Date;
+}): boolean {
+    const { lastTriggeredAt, cooldownMinutes, now } = params;
+    if (!lastTriggeredAt) return true;
+    const cooldownMs = cooldownMinutes * 60 * 1000;
+    return now.getTime() - lastTriggeredAt.getTime() >= cooldownMs;
+}

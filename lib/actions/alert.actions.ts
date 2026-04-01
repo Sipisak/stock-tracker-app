@@ -17,7 +17,6 @@ export const createAlert = async (data: AlertFormData & {symbol :string; company
         const newAlert = new Alert({
             ...data,
             userId: session.user.id,
-            status: 'active',
         });
 
         await newAlert.save();
@@ -37,7 +36,7 @@ export const getAlertsForUser = async (): Promise<IAlert[]> => {
 
         await connectToDatabase();
 
-        const alerts = await Alert.find({ userId: session.user.id, status: 'active' }).sort({ createdAt: -1 }).lean();
+        const alerts = await Alert.find({ userId: session.user.id, enabled: true }).sort({ createdAt: -1 }).lean();
 
         return JSON.parse(JSON.stringify(alerts));
     } catch (error) {

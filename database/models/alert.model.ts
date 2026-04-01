@@ -30,7 +30,7 @@ const AlertSchema = new Schema<IAlert>(
         company: { type: String, required: true },
 
         alertType: { type: String, enum: ["price", "percent", "volume"], required: true },
-        threshold: { type: Number, required: true },
+        threshold: { type: Number, required: true, min: 0 },
         condition: { type: String, enum: ["upper", "lower"], required: true },
 
         enabled: { type: Boolean, default: true, index: true },
