@@ -47,7 +47,7 @@ AI-powered modern stock market app built with Next.js, Shadcn, Better Auth, and 
 
 👉 **Real-Time Workflows**: Powered by **Inngest**, automate event-driven processes like price updates, alert scheduling, automated reporting, and AI-driven insights.
 
-👉 **AI-Powered Alerts & Summaries**: Generate personalized market summaries, daily digests, and earnings report notifications, helping users track performance and make data-driven decisions.
+  👉 **AI-Powered Alerts & Summaries**: Generate personalized market summaries, weekly digests, and earnings report notifications, helping users track performance and make data-driven decisions.
 
 👉 **Customizable Notifications**: Fine-tune alerts and notifications based on user watchlists and preferences for a highly personalized experience.
 
@@ -69,8 +69,8 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/adrianhajdin/signalist_stock-tracker-app.git
-cd signalist_stock-tracker-app
+git clone https://github.com/Sipisak/stock-tracker-app.git
+cd stock-tracker-app
 ```
 
 **Installation**
