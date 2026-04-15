@@ -21,14 +21,16 @@ const io = new Server(server, {
     },
 });
 
-let subscribedSymbols = new Set<string>();
+const subscribedSymbols = new Set<string>();
 
 function connectFinnhub() {
     const ws = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_API_KEY}`);
 
     ws.on("open", () => {
         console.log("✅ Pripojené k Finnhub WS - Tichý strážca spustený");
-
+        for (const symbol of subscribedSymbols) {
+            ws.send(JSON.stringify({ type: "subscribe", symbol }));
+        }
     });
 
     ws.on("message", async (raw) => {
@@ -41,7 +43,8 @@ function connectFinnhub() {
                 const currentPrice = trade.p as number;
                 const ts = trade.t as number;
 
-
+                // 🚨 TOTO JE HLAVNÉ: Tiché vyhodnotenie podmienok na pozadí
+                // processTick vezme aktuálnu cenu a porovná ju s pravidlami v MongoDB
                 const result = await processTick({
                     symbol,
                     alertType: "price",
