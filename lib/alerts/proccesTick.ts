@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/database/mongoose"; // adjust name to your file export
+import { connectToDatabase } from "@/database/mongoose";
 import { Alert } from '@/database/models/alert.model';
 import { didCrossThreshold, isCooldownOver } from "@/lib/alerts/evaluate";
 import AlertEvent  from "@/database/models/alertEvent.models";
@@ -14,17 +14,20 @@ export async function processTick(params: {
     const now = params.observedAt ?? new Date();
     const symbol = params.symbol.toUpperCase().trim();
 
-    if (!Number.isFinite(params.currentValue)) return { triggered: 0 };
+    // Pokud nemáme triggeredAlerts, vrátíme prostě prázdné pole
+    if (!Number.isFinite(params.currentValue)) return { triggered: 0, triggeredAlerts: [] };
 
     await connectToDatabase();
 
     const rules = await Alert.find({
         symbol,
         alertType: params.alertType,
-        enabled: true,
+        enabled: true, // v actions to mas enabled, tak to nechame
     }).lean();
 
     let triggeredCount = 0;
+    // 👈 NOVÉ: Zde si budeme ukládat, koho přesně se alert týká
+    const triggeredAlerts: Array<{ alertId: string; userId: string }> = [];
 
     for (const rule of rules) {
         const prev = rule.lastSeenValue ?? null;
@@ -46,7 +49,7 @@ export async function processTick(params: {
             const cooldownMs = (rule.cooldownMinutes ?? 15) * 60 * 1000;
             const latestAllowed = new Date(now.getTime() - cooldownMs);
 
-            // Atomic guard prevents duplicate triggers (parallel ticks / reconnects)
+            // Atomic guard prevents duplicate triggers
             const updated = await Alert.findOneAndUpdate(
                 {
                     _id: rule._id,
@@ -68,17 +71,22 @@ export async function processTick(params: {
                     ruleId: updated._id,
                     userId: updated.userId,
                     symbol: updated.symbol,
-
                     alertType: updated.alertType,
                     condition: updated.condition,
                     threshold: updated.threshold,
-
                     triggerValue: params.currentValue,
                     triggeredAt: now,
                     reason: "threshold_crossing",
                 });
 
                 triggeredCount += 1;
+
+                // 👈 NOVÉ: Přidáme info do pole pro odeslání do WS / Inngestu
+                triggeredAlerts.push({
+                    alertId: updated._id.toString(),
+                    userId: updated.userId,
+                });
+
                 continue;
             }
         }
@@ -90,5 +98,9 @@ export async function processTick(params: {
         );
     }
 
-    return { triggered: triggeredCount };
+    // 👈 NOVÉ: Vracíme i to pole uživatelů
+    return {
+        triggered: triggeredCount,
+        triggeredAlerts
+    };
 }
