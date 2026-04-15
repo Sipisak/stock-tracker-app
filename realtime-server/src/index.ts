@@ -5,6 +5,7 @@ import WebSocket from "ws";
 import {processTick} from "@/lib/alerts/proccesTick";
 
 
+
 const PORT = Number(process.env.PORT || 4001);
 const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY;
 

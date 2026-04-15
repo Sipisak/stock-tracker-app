@@ -14,19 +14,19 @@ export async function processTick(params: {
     const now = params.observedAt ?? new Date();
     const symbol = params.symbol.toUpperCase().trim();
 
-    // Pokud nemáme triggeredAlerts, vrátíme prostě prázdné pole
+
     if (!Number.isFinite(params.currentValue)) return { triggered: 0, triggeredAlerts: [] };
 
     await connectToDatabase();
 
     const rules = await Alert.find({
         symbol,
-        alertType: params.alertType,
-        enabled: true, // v actions to mas enabled, tak to nechame
+        "alertType": params.alertType,
+        "enabled": true,
     }).lean();
 
     let triggeredCount = 0;
-    // 👈 NOVÉ: Zde si budeme ukládat, koho přesně se alert týká
+
     const triggeredAlerts: Array<{ alertId: string; userId: string }> = [];
 
     for (const rule of rules) {
@@ -81,7 +81,7 @@ export async function processTick(params: {
 
                 triggeredCount += 1;
 
-                // 👈 NOVÉ: Přidáme info do pole pro odeslání do WS / Inngestu
+
                 triggeredAlerts.push({
                     alertId: updated._id.toString(),
                     userId: updated.userId,
@@ -91,14 +91,14 @@ export async function processTick(params: {
             }
         }
 
-        // Not triggered: still update lastSeenValue so crossing works later
+
         await Alert.updateOne(
             { _id: rule._id },
             { $set: { lastSeenValue: params.currentValue } }
         );
     }
 
-    // 👈 NOVÉ: Vracíme i to pole uživatelů
+    
     return {
         triggered: triggeredCount,
         triggeredAlerts
