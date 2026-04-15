@@ -2,12 +2,15 @@ import "dotenv/config";
 import http from "node:http";
 import { Server } from "socket.io";
 import WebSocket from "ws";
-import {processTick} from "@/lib/alerts/proccesTick";
-
-
+import { processTick } from "@/lib/alerts/proccesTick";
+import { connectToDatabase } from "@/database/mongoose";
 
 const PORT = Number(process.env.PORT || 4001);
 const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY;
+
+if (!FINNHUB_API_KEY) {
+    console.error("❌ Chýba FINNHUB_API_KEY!");
+}
 
 const server = http.createServer();
 const io = new Server(server, {
@@ -18,16 +21,14 @@ const io = new Server(server, {
     },
 });
 
-const subscribedSymbols = new Set<string>();
+let subscribedSymbols = new Set<string>();
 
 function connectFinnhub() {
     const ws = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_API_KEY}`);
 
     ws.on("open", () => {
         console.log("✅ Pripojené k Finnhub WS - Tichý strážca spustený");
-        for (const symbol of subscribedSymbols) {
-            ws.send(JSON.stringify({ type: "subscribe", symbol }));
-        }
+
     });
 
     ws.on("message", async (raw) => {
@@ -40,8 +41,7 @@ function connectFinnhub() {
                 const currentPrice = trade.p as number;
                 const ts = trade.t as number;
 
-                // 🚨 TOTO JE HLAVNÉ: Tiché vyhodnotenie podmienok na pozadí
-                // processTick vezme aktuálnu cenu a porovná ju s pravidlami v MongoDB
+
                 const result = await processTick({
                     symbol,
                     alertType: "price",
@@ -49,22 +49,37 @@ function connectFinnhub() {
                     observedAt: new Date(ts),
                 });
 
-                // Ak processTick zistí, že cena stúpla/klesla podľa podmienky užívateľa...
-                if (result && result.triggered > 0) {
-                    console.log(`🚨 ALERT TRIGGER: ${symbol} splnil podmienku pri cene ${currentPrice}!`);
 
-                    // 1. processTick už uložil AlertEvent do databázy
+                if (result && result.triggered > 0 && result.triggeredAlerts) {
+                    console.log(`🚨 ALERT TRIGGER: ${symbol} pri cene ${currentPrice}! Rozosielam ${result.triggered} užívateľom.`);
 
-                    // 2. Ak je užívateľ práve online v aplikácii, pošleme mu realtime notifikáciu
-                    io.to(`alerts:${symbol}`).emit("alert:fired", {
-                        symbol,
-                        price: currentPrice,
-                        time: ts,
-                        message: `Upozornenie: Akcia ${symbol} dosiahla cenu ${currentPrice}`
-                    });
 
-                    // 3. (Voliteľné) Tu môžeš odpáliť Inngest event pre odoslanie emailu:
-                    // fetch('https://tvoja-next-app/api/inngest', { method: 'POST', body: ... })
+                    for (const triggeredAlert of result.triggeredAlerts) {
+                        const { userId, alertId } = triggeredAlert;
+
+
+                        io.to(`user:${userId}`).emit("alert:fired", {
+                            symbol,
+                            price: currentPrice,
+                            message: `Akcia ${symbol} dosiahla tvoju cieľovú cenu ${currentPrice}$`
+                        });
+
+
+                        const NEXT_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+                        fetch(`${NEXT_APP_URL}/api/inngest`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                name: "app/alert.triggered",
+                                data: {
+                                    userId,
+                                    symbol,
+                                    price: currentPrice,
+                                    alertId
+                                }
+                            })
+                        }).catch(err => console.error(`❌ Zlyhal Inngest trigger pre užívateľa ${userId}:`, err));
+                    }
                 }
             }
         } catch (err) {
@@ -72,8 +87,43 @@ function connectFinnhub() {
         }
     });
 
-    // ... (zvyšok ws.on('close') a ws.on('error') zostáva rovnaký)
+    ws.on("close", () => {
+        console.warn("⚠️ Finnhub odpojený, pokus o znovupripojenie za 3s...");
+        setTimeout(connectFinnhub, 3000);
+    });
+
+    ws.on("error", (err) => {
+        console.error("❌ Finnhub WS error:", err);
+        ws.close();
+    });
+
     return ws;
 }
 
-// ... (inicializácia a socket.io pripojenia)
+
+io.on("connection", (socket) => {
+    socket.on("identify", (userId: string) => {
+        socket.join(`user:${userId}`);
+        console.log(`👤 Užívateľ ${userId} pripojený do svojej privátnej miestnosti`);
+    });
+});
+
+
+async function bootstrap() {
+    try {
+        await connectToDatabase();
+        console.log("✅ Databáza pripojená");
+
+        connectFinnhub();
+
+
+        server.listen(PORT, "0.0.0.0", () => {
+            console.log(`🚀 Realtime server beží na porte ${PORT}`);
+        });
+    } catch (error) {
+        console.error("❌ Zlyhal štart servera:", error);
+        process.exit(1);
+    }
+}
+
+bootstrap();
