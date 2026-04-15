@@ -1,6 +1,6 @@
 import { connectToDatabase } from "@/database/mongoose";
 import { Alert } from '@/database/models/alert.model';
-import { didCrossThreshold, isCooldownOver } from "@/lib/alerts/evaluate";
+import { didCrossThreshold, isCooldownOver, didCrossPercentThreshold } from "@/lib/alerts/evaluate";
 import AlertEvent  from "@/database/models/alertEvent.models";
 
 type AlertType = "price" | "percent" | "volume";
@@ -31,13 +31,23 @@ export async function processTick(params: {
 
     for (const rule of rules) {
         const prev = rule.lastSeenValue ?? null;
+        let crossed = false;
 
-        const crossed = didCrossThreshold({
-            condition: rule.condition,
-            prev,
-            current: params.currentValue,
-            threshold: rule.threshold,
-        });
+        if (rule.alertType === "percent") {
+            crossed = didCrossPercentThreshold({
+                condition: rule.condition,
+                initial: prev,
+                current: params.currentValue,
+                threshold: rule.threshold,
+            });
+        } else {
+            crossed = didCrossThreshold({
+                condition: rule.condition,
+                prev,
+                current: params.currentValue,
+                threshold: rule.threshold,
+            });
+        }
 
         const cooldownOk = isCooldownOver({
             lastTriggeredAt: rule.lastTriggeredAt ?? null,
@@ -92,10 +102,12 @@ export async function processTick(params: {
         }
 
 
-        await Alert.updateOne(
-            { _id: rule._id },
-            { $set: { lastSeenValue: params.currentValue } }
-        );
+        if (rule.alertType !== "percent" || prev === null) {
+            await Alert.updateOne(
+                {_id: rule._id},
+                {$set: {lastSeenValue: params.currentValue}}
+            );
+        }
     }
 
     
