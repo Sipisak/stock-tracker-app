@@ -1,10 +1,13 @@
 import {inngest} from "@/lib/inngest/client";
 import {NEWS_SUMMARY_EMAIL_PROMPT, PERSONALIZED_WELCOME_EMAIL_PROMPT} from "@/lib/inngest/prompts";
-import {sendNewsSummaryEmail, sendWelcomeEmail} from "@/lib/nodemailer";
+import {sendNewsSummaryEmail, sendWelcomeEmail, sendStockAlertEmail} from "@/lib/nodemailer";
 import {getAllUsersForNewsEmail} from "@/lib/actions/user.actions";
 import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
 import { getNews } from "@/lib/actions/finnhub.actions";
 import { getFormattedTodayDate } from "@/lib/utils";
+import {connectToDatabase} from "@/database/mongoose";
+import { Alert } from "@/database/models/alert.model";
+import mongoose from "mongoose";
 
 export const sendSignUpEmail = inngest.createFunction(
     { id: 'sign-up-email' },
@@ -118,3 +121,55 @@ export const sendWeeklyNewsSummary = inngest.createFunction(
         return { success: true, message: 'Weekly news summary emails sent successfully' }
     }
 )
+
+export const sendAlertEmail = inngest.createFunction(
+    { id: 'send-stock-alert-email', retries: 3 }, // Retries pro jistotu, kdyby vypadl mail server
+    { event: 'app/alert.triggered' },
+    async ({ event, step }) => {
+        const { userId, symbol, price, alertId } = event.data;
+
+        // 1. Připojení k DB
+        await step.run('connect-to-db', async () => {
+            await connectToDatabase();
+        });
+
+        // 2. Načtení uživatele pro zjištění e-mailu (BetterAuth tabulka)
+        const user = await step.run('fetch-user', async () => {
+            const db = mongoose.connection;
+            return await db.collection('user').findOne({ id: userId });
+        });
+
+        if (!user || !user.email) {
+            return { success: false, message: 'User or email not found' };
+        }
+
+        // 3. Načtení Alertu, abychom zjistili, jestli to je 'upper' nebo 'lower' a jaký byl target
+        const alert = await step.run('fetch-alert', async () => {
+            return await Alert.findById(alertId).lean();
+        });
+
+        if (!alert) {
+            return { success: false, message: 'Alert not found in DB' };
+        }
+
+
+        await step.run('send-email', async () => {
+            const now = new Date();
+            const formattedTime = now.toLocaleString('en-US', {
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+
+            await sendStockAlertEmail({
+                email: user.email,
+                symbol: alert.symbol,
+                company: alert.company || alert.symbol,
+                currentPrice: price,
+                targetPrice: alert.threshold,
+                condition: alert.condition,
+                timestamp: formattedTime
+            });
+        });
+
+        return { success: true, message: `Alert email sent for ${symbol} to ${user.email}` };
+    }
+);

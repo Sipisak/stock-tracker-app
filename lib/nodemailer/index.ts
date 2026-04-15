@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import {WELCOME_EMAIL_TEMPLATE, NEWS_SUMMARY_EMAIL_TEMPLATE} from "@/lib/nodemailer/templates";
+import {WELCOME_EMAIL_TEMPLATE, NEWS_SUMMARY_EMAIL_TEMPLATE, STOCK_ALERT_LOWER_EMAIL_TEMPLATE, STOCK_ALERT_UPPER_EMAIL_TEMPLATE} from "@/lib/nodemailer/templates";
 
 export const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -37,6 +37,42 @@ export const sendNewsSummaryEmail = async (
         to: email,
         subject: `📈 Market News Summary Today - ${date}`,
         text: `Today's market news summary from Signalist`,
+        html: htmlTemplate,
+    };
+
+    await transporter.sendMail(mailOptions);
+};
+
+export const sendStockAlertEmail = async ({
+                                              email, symbol, company, currentPrice, targetPrice, condition, timestamp
+                                          }: {
+    email: string;
+    symbol: string;
+    company: string;
+    currentPrice: number;
+    targetPrice: number;
+    condition: string;
+    timestamp: string;
+}) => {
+
+    const template = condition === 'upper'
+        ? STOCK_ALERT_UPPER_EMAIL_TEMPLATE
+        : STOCK_ALERT_LOWER_EMAIL_TEMPLATE;
+
+
+    const htmlTemplate = template
+        .replace(/{{symbol}}/g, symbol)
+        .replace(/{{company}}/g, company)
+        .replace(/{{currentPrice}}/g, currentPrice.toString())
+        .replace(/{{targetPrice}}/g, targetPrice.toString())
+        .replace(/{{timestamp}}/g, timestamp);
+
+    const subjectDirection = condition === 'upper' ? 'Stoupla NAD' : 'Klesla POD';
+
+    const mailOptions = {
+        from: `"Signalist Alerts" <signalist@jsmastery.pro>`,
+        to: email,
+        subject: `🚨 Alert: Akcie ${symbol} ${subjectDirection} tvůj limit!`,
         html: htmlTemplate,
     };
 

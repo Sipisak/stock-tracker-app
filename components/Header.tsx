@@ -3,6 +3,7 @@ import Image from "next/image";
 import NavItems from "@/components/NavItems";
 import UserDropdown from "@/components/UserDropdown";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
+import {WsStatusIndicator} from "@/components/WsStatusIndicator";
 
 const Header = async ({ user }: { user: User }) => {
     const initialStocks = await searchStocks();
@@ -16,8 +17,10 @@ const Header = async ({ user }: { user: User }) => {
                 <nav className="hidden sm:block">
                     <NavItems initialStocks={initialStocks} />
                 </nav>
-
-                <UserDropdown user={user} initialStocks={initialStocks} />
+                <div className="flex items-center gap-2 rounded-md bg-secondary/20 px-2 py-1">
+                    <UserDropdown user={user} initialStocks={initialStocks} />
+                    <WsStatusIndicator/>
+                </div>
             </div>
         </header>
     )
