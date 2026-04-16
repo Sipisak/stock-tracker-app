@@ -10,6 +10,7 @@ export async function processTick(params: {
     alertType: AlertType;
     currentValue: number;
     observedAt?: Date;
+    receivedAt: number;
 }) {
     const now = params.observedAt ?? new Date();
     const symbol = params.symbol.toUpperCase().trim();
@@ -49,12 +50,13 @@ export async function processTick(params: {
             });
         }
 
+        const t2 = Date.now();
+
         const cooldownOk = isCooldownOver({
             lastTriggeredAt: rule.lastTriggeredAt ?? null,
             cooldownMinutes: rule.cooldownMinutes ?? 15,
             now,
         });
-
         if (crossed && cooldownOk) {
             const cooldownMs = (rule.cooldownMinutes ?? 15) * 60 * 1000;
             const latestAllowed = new Date(now.getTime() - cooldownMs);
@@ -76,6 +78,8 @@ export async function processTick(params: {
                 { new: true }
             ).lean();
 
+            const t3 = Date.now();
+
             if (updated) {
                 await AlertEvent.create({
                     ruleId: updated._id,
@@ -95,6 +99,11 @@ export async function processTick(params: {
                 triggeredAlerts.push({
                     alertId: updated._id.toString(),
                     userId: updated.userId,
+                    timings: {
+                        receivedAt: params.receivedAt,
+                        evaluatedAt: t2,
+                        savedAt: t3
+                    }
                 });
 
                 continue;
