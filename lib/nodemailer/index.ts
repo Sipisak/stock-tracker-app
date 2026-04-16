@@ -15,7 +15,7 @@ export const sendWelcomeEmail = async ({ email, name, intro }: WelcomeEmailData)
         .replace('{{intro}}', intro);
 
     const mailOptions = {
-        from: `"Signalist" <signalist@jsmastery.pro>`,
+        from: `"Signalist" <signalist@gmail.com>`,
         to: email,
         subject: `Welcome to Signalist - your stock market toolkit is ready!`,
         text: 'Thanks for joining Signalist',
@@ -33,7 +33,7 @@ export const sendNewsSummaryEmail = async (
         .replace('{{newsContent}}', newsContent);
 
     const mailOptions = {
-        from: `"Signalist News" <signalist@jsmastery.pro>`,
+        from: `"Signalist News" <signalist@gmail.com>`,
         to: email,
         subject: `📈 Market News Summary Today - ${date}`,
         text: `Today's market news summary from Signalist`,
@@ -70,7 +70,7 @@ export const sendStockAlertEmail = async ({
     const subjectDirection = condition === 'upper' ? 'Stoupla NAD' : 'Klesla POD';
 
     const mailOptions = {
-        from: `"Signalist Alerts" <signalist@jsmastery.pro>`,
+        from: `"Signalist Alerts" <signalist@gmail.com>`,
         to: email,
         subject: `🚨 Alert: Akcie ${symbol} ${subjectDirection} tvůj limit!`,
         html: htmlTemplate,
