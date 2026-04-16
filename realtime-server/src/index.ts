@@ -24,10 +24,29 @@ const io = new Server(server, {
 
 const subscribedSymbols = new Set<string>();
 let finnhubWs: WebSocket | null = null;
+let isReconcilingSubscriptions = false;
 
 function sendFinnhubSubscription(type: "subscribe" | "unsubscribe", symbol: string) {
     if (!finnhubWs || finnhubWs.readyState !== WebSocket.OPEN) return;
     finnhubWs.send(JSON.stringify({ type, symbol }));
+}
+
+function subscribeSymbol(symbol: string) {
+    const normalizedSymbol = symbol.toUpperCase().trim();
+    if (subscribedSymbols.has(normalizedSymbol)) return false;
+
+    subscribedSymbols.add(normalizedSymbol);
+    sendFinnhubSubscription("subscribe", normalizedSymbol);
+    return true;
+}
+
+function unsubscribeSymbol(symbol: string) {
+    const normalizedSymbol = symbol.toUpperCase().trim();
+    if (!subscribedSymbols.has(normalizedSymbol)) return false;
+
+    subscribedSymbols.delete(normalizedSymbol);
+    sendFinnhubSubscription("unsubscribe", normalizedSymbol);
+    return true;
 }
 
 async function seedSubscribedSymbols() {
@@ -35,26 +54,18 @@ async function seedSubscribedSymbols() {
 
     for (const alert of enabledAlerts) {
         if (!alert.symbol) continue;
-        subscribedSymbols.add(alert.symbol);
+        subscribedSymbols.add(alert.symbol.toUpperCase().trim());
     }
 }
-
 function syncSubscribedSymbol(symbol: string, enabled: boolean) {
     const normalizedSymbol = symbol.toUpperCase().trim();
 
     if (enabled) {
-        const wasMissing = !subscribedSymbols.has(normalizedSymbol);
-        subscribedSymbols.add(normalizedSymbol);
-        if (wasMissing) {
-            sendFinnhubSubscription("subscribe", normalizedSymbol);
-        }
+        subscribeSymbol(normalizedSymbol);
         return;
     }
 
-    const wasPresent = subscribedSymbols.delete(normalizedSymbol);
-    if (wasPresent) {
-        sendFinnhubSubscription("unsubscribe", normalizedSymbol);
-    }
+    unsubscribeSymbol(normalizedSymbol);
 }
 
 function connectFinnhub() {
@@ -62,6 +73,7 @@ function connectFinnhub() {
     finnhubWs = ws;
 
     ws.on("open", () => {
+        console.log(`✅ Připojeno k Finnhub WS. Aktuálně sleduji ${subscribedSymbols.size} symbolů:`, Array.from(subscribedSymbols));
         console.log("✅ Pripojené k Finnhub WS - Tichý strážca spustený");
         for (const symbol of subscribedSymbols) {
             ws.send(JSON.stringify({ type: "subscribe", symbol }));
@@ -158,7 +170,16 @@ io.on("connection", (socket) => {
         console.log(`👤 Užívateľ ${verifiedUserId} pripojený do svojej privátnej miestnosti`);
     }
 
-    socket.on("identify", () => {
+    socket.on("identify", (userId: unknown) => {
+        if (typeof userId !== "string" || !userId.trim()) {
+            return;
+        }
+
+        const normalizedUserId = userId.trim();
+        socket.data.userId = normalizedUserId;
+        socket.join(`user:${normalizedUserId}`);
+
+        console.log(`👤 Užívateľ ${normalizedUserId} identifikovaný a pripojený do svojej privátnej miestnosti`);
     });
 });
 
@@ -172,14 +193,33 @@ async function bootstrap() {
         connectFinnhub();
 
         setInterval(async () => {
-            console.log("🔄 Synchronizujem symboly s databázou...");
-            const enabledAlerts = await Alert.find({ enabled: true }).select({ symbol: 1 }).lean();
+            if (isReconcilingSubscriptions) return;
+            isReconcilingSubscriptions = true;
 
-            for (const alert of enabledAlerts) {
-                if (alert.symbol) {
+            try {
+                console.log("🔄 Synchronizujem symboly s databázou...");
 
-                    syncSubscribedSymbol(alert.symbol, true);
+                const enabledAlerts = await Alert.find({ enabled: true }).select({ symbol: 1 }).lean();
+                const enabledSymbols = new Set<string>();
+
+                for (const alert of enabledAlerts) {
+                    if (!alert.symbol) continue;
+                    enabledSymbols.add(alert.symbol.toUpperCase().trim());
                 }
+
+                for (const symbol of enabledSymbols) {
+                    if (!subscribedSymbols.has(symbol)) {
+                        syncSubscribedSymbol(symbol, true);
+                    }
+                }
+
+                for (const symbol of [...subscribedSymbols]) {
+                    if (!enabledSymbols.has(symbol)) {
+                        unsubscribeSymbol(symbol);
+                    }
+                }
+            } finally {
+                isReconcilingSubscriptions = false;
             }
         }, 60000);
 
