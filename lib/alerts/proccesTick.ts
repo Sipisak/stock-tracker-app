@@ -80,8 +80,6 @@ export async function processTick(params: {
 
             const t3 = Date.now();
 
-            const t3 = Date.now();
-
             if (updated) {
                 await AlertEvent.create({
                     ruleId: updated._id,
@@ -90,7 +88,7 @@ export async function processTick(params: {
                     alertType: updated.alertType,
                     condition: updated.condition,
                     threshold: updated.threshold,
-                    triggerValue: params.currentValue,
+                    triggerPrice: params.currentValue,
                     triggeredAt: now,
                     reason: "threshold_crossing",
                 });
