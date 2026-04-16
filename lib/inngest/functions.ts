@@ -9,6 +9,7 @@ import {connectToDatabase} from "@/database/mongoose";
 import { Alert } from "@/database/models/alert.model";
 import mongoose from "mongoose";
 
+
 export const sendSignUpEmail = inngest.createFunction(
     { id: 'sign-up-email' },
     { event: 'app/user.created'},
