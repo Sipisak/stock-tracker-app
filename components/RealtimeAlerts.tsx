@@ -21,12 +21,17 @@ export default function RealtimeAlerts({ userId }: { userId: string }) {
     useEffect(() => {
         if (!userId) return;
 
+       socket.auth = { userId };
         socket.connect();
-
+        
         function onConnect() {
             console.log("Připojeno k realtime serveru");
 
             socket.emit("identify", userId);
+        }
+
+        function onConnectError(err: Error) {
+            console.error("❌ Backend mě odmítl připojit. Důvod:", err.message);
         }
 
         function onAlertFired(data: AlertFiredPayload) {
@@ -51,10 +56,12 @@ export default function RealtimeAlerts({ userId }: { userId: string }) {
         }
 
         socket.on("connect", onConnect);
+        socket.on("connect_error", onConnectError);
         socket.on("alert:fired", onAlertFired);
 
         return () => {
             socket.off("connect", onConnect);
+            socket.off("connect_error", onConnectError);
             socket.off("alert:fired", onAlertFired);
             socket.disconnect();
         };
