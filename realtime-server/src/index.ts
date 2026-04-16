@@ -73,8 +73,8 @@ function connectFinnhub() {
     finnhubWs = ws;
 
     ws.on("open", () => {
-        console.log(`✅ Připojeno k Finnhub WS. Aktuálně sleduji ${subscribedSymbols.size} symbolů:`, Array.from(subscribedSymbols));
-        console.log("✅ Pripojené k Finnhub WS - Tichý strážca spustený");
+        console.log(`✅ Connected to Finnhub WS. Watching these ${subscribedSymbols.size} stocks:`, Array.from(subscribedSymbols));
+        console.log("✅ Connected to Finnhub WS.  ");
         for (const symbol of subscribedSymbols) {
             ws.send(JSON.stringify({ type: "subscribe", symbol }));
         }
@@ -99,7 +99,7 @@ function connectFinnhub() {
                     });
 
                     if (result && result.triggered > 0 && result.triggeredAlerts) {
-                        console.log(`🚨 ALERT TRIGGER: ${symbol} pri cene ${currentPrice}! Rozosielam ${result.triggered} užívateľom.`);
+                        console.log(`🚨 ALERT TRIGGER: ${symbol} at the price ${currentPrice}! I'm sending out ${result.triggered} users.`);
 
                         for (const triggeredAlert of result.triggeredAlerts) {
                             const { userId, alertId } = triggeredAlert;
@@ -107,7 +107,7 @@ function connectFinnhub() {
                             io.to(`user:${userId}`).emit("alert:fired", {
                                 symbol,
                                 price: currentPrice,
-                                message: `Akcia ${symbol} dosiahla tvoju cieľovú cenu ${currentPrice}$`
+                                message: `Stocks ${symbol} has reached your target price ${currentPrice}$`
                             });
 
                             const NEXT_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -123,18 +123,18 @@ function connectFinnhub() {
                                         alertId
                                     }
                                 })
-                            }).catch(err => console.error(`❌ Zlyhal Inngest trigger pre užívateľa ${userId}:`, err));
+                            }).catch(err => console.error(`❌ The Inngest trigger for the user failed ${userId}:`, err));
                         }
                     }
                 }
             }
         } catch (err) {
-            console.error("❌ Chyba pri spracovaní tiku:", err);
+            console.error("❌ Error processing the tick:", err);
         }
     });
 
     ws.on("close", () => {
-        console.warn("⚠️ Finnhub odpojený, pokus o znovupripojenie za 3s...");
+        console.warn("⚠️ Finnhub disconnected; attempting to reconnect in 3 seconds...");
         setTimeout(connectFinnhub, 3000);
     });
 
@@ -167,19 +167,23 @@ io.on("connection", (socket) => {
 
     if (verifiedUserId) {
         socket.join(`user:${verifiedUserId}`);
-        console.log(`👤 Užívateľ ${verifiedUserId} pripojený do svojej privátnej miestnosti`);
+        console.log(`👤 User ${verifiedUserId} connected to his private room`);
     }
 
-    socket.on("identify", (userId: unknown) => {
-        if (typeof userId !== "string" || !userId.trim()) {
-            return;
+    socket.on("identify", () => {
+        const currentUserId = socket.data.userId as string | undefined;
+        if (!currentUserId) return;
+
+        for (const room of socket.rooms) {
+            if (room.startsWith("user:") && room !== `user:${currentUserId}`) {
+                socket.leave(room);
+            }
         }
 
-        const normalizedUserId = userId.trim();
-        socket.data.userId = normalizedUserId;
-        socket.join(`user:${normalizedUserId}`);
+        socket.data.userId = currentUserId;
+        socket.join(`user:${currentUserId}`);
 
-        console.log(`👤 Užívateľ ${normalizedUserId} identifikovaný a pripojený do svojej privátnej miestnosti`);
+        console.log(`👤 User ${currentUserId} identified`);
     });
 });
 
@@ -197,7 +201,7 @@ async function bootstrap() {
             isReconcilingSubscriptions = true;
 
             try {
-                console.log("🔄 Synchronizujem symboly s databázou...");
+                console.log("🔄 Synchronization symbols with DB ...");
 
                 const enabledAlerts = await Alert.find({ enabled: true }).select({ symbol: 1 }).lean();
                 const enabledSymbols = new Set<string>();
