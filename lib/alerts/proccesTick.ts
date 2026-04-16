@@ -88,7 +88,7 @@ export async function processTick(params: {
                     alertType: updated.alertType,
                     condition: updated.condition,
                     threshold: updated.threshold,
-                    triggerValue: params.currentValue,
+                    triggerPrice: params.currentValue,
                     triggeredAt: now,
                     reason: "threshold_crossing",
                 });
