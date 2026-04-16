@@ -14,7 +14,6 @@ export interface IAlert extends Document {
 
     enabled: boolean;
 
-    // reliability / correctness
     cooldownMinutes: number;
     lastTriggeredAt?: Date | null;
     lastSeenValue?: number | null;

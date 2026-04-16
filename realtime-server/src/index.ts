@@ -62,6 +62,7 @@ function connectFinnhub() {
     finnhubWs = ws;
 
     ws.on("open", () => {
+        console.log(`✅ Připojeno k Finnhub WS. Aktuálně sleduji ${subscribedSymbols.size} symbolů:`, Array.from(subscribedSymbols));
         console.log("✅ Pripojené k Finnhub WS - Tichý strážca spustený");
         for (const symbol of subscribedSymbols) {
             ws.send(JSON.stringify({ type: "subscribe", symbol }));
