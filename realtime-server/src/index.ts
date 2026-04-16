@@ -81,6 +81,8 @@ function connectFinnhub() {
     });
 
     ws.on("message", async (raw) => {
+        const t1 = Date.now();
+
         try {
             const msg = JSON.parse(raw.toString());
             if (msg.type !== "trade" || !Array.isArray(msg.data)) return;
@@ -96,18 +98,25 @@ function connectFinnhub() {
                         alertType,
                         currentValue: currentPrice,
                         observedAt: new Date(ts),
+                        receivedAt: t1,
                     });
 
                     if (result && result.triggered > 0 && result.triggeredAlerts) {
                         console.log(`🚨 ALERT TRIGGER: ${symbol} at the price ${currentPrice}! I'm sending out ${result.triggered} users.`);
 
                         for (const triggeredAlert of result.triggeredAlerts) {
-                            const { userId, alertId } = triggeredAlert;
+                            const { userId, alertId, timings } = triggeredAlert;
+
+                            const t4 = Date.now();
 
                             io.to(`user:${userId}`).emit("alert:fired", {
                                 symbol,
                                 price: currentPrice,
-                                message: `Stocks ${symbol} has reached your target price ${currentPrice}$`
+                                message: `Stocks ${symbol} has reached your target price ${currentPrice}$`,
+                                timings: {
+                                    ...timings,
+                                    emittedAt: t4
+                                }
                             });
 
                             const NEXT_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";

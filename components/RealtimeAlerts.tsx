@@ -5,6 +5,18 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import {socket} from "@/lib/websocket/socket-client";
 
+type AlertFiredPayload = {
+    symbol: string;
+    price: number;
+    message: string;
+    timings?: {
+        receivedAt: number;
+        evaluatedAt: number;
+        savedAt: number;
+        emittedAt: number;
+    };
+};
+
 export default function RealtimeAlerts({ userId }: { userId: string }) {
     useEffect(() => {
         if (!userId) return;
@@ -17,8 +29,23 @@ export default function RealtimeAlerts({ userId }: { userId: string }) {
             socket.emit("identify", userId);
         }
 
-        function onAlertFired(data: { symbol: string; price: number; message: string }) {
-            toast.success("Alert splněn! 🚨", {
+        function onAlertFired(data: AlertFiredPayload) {
+            const displayedAt = Date.now();
+
+            if (data.timings) {
+                const metrics = {
+                    "Vyhodnocení (CPU)": `${data.timings.evaluatedAt - data.timings.receivedAt} ms`,
+                    "Zápis do DB (I/O)": `${data.timings.savedAt - data.timings.evaluatedAt} ms`,
+                    "Příprava odeslání (WS)": `${data.timings.emittedAt - data.timings.savedAt} ms`,
+                    "Zobrazení v UI (Síť + Render)": `${displayedAt - data.timings.emittedAt} ms`,
+                    "CELKOVÁ LATENCE": `${displayedAt - data.timings.receivedAt} ms`,
+                };
+
+                console.log(`📊 MĚŘENÍ LATENCE PRO ${data.symbol}:`);
+                console.table(metrics);
+            }
+
+            toast.success("Alert Spuštěn", {
                 description: data.message,
             });
         }
