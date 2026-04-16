@@ -80,6 +80,8 @@ export async function processTick(params: {
 
             const t3 = Date.now();
 
+            const t3 = Date.now();
+
             if (updated) {
                 await AlertEvent.create({
                     ruleId: updated._id,
