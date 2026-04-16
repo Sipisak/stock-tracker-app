@@ -170,16 +170,20 @@ io.on("connection", (socket) => {
         console.log(`👤 Užívateľ ${verifiedUserId} pripojený do svojej privátnej miestnosti`);
     }
 
-    socket.on("identify", (userId: unknown) => {
-        if (typeof userId !== "string" || !userId.trim()) {
-            return;
+    socket.on("identify", () => {
+        const currentUserId = socket.data.userId as string | undefined;
+        if (!currentUserId) return;
+
+        for (const room of socket.rooms) {
+            if (room.startsWith("user:") && room !== `user:${currentUserId}`) {
+                socket.leave(room);
+            }
         }
 
-        const normalizedUserId = userId.trim();
-        socket.data.userId = normalizedUserId;
-        socket.join(`user:${normalizedUserId}`);
+        socket.data.userId = currentUserId;
+        socket.join(`user:${currentUserId}`);
 
-        console.log(`👤 Užívateľ ${normalizedUserId} identifikovaný a pripojený do svojej privátnej miestnosti`);
+        console.log(`👤 Užívateľ ${currentUserId} identifikovaný a pripojený do svojej privátnej miestnosti`);
     });
 });
 
