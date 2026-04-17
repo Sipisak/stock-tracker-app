@@ -4,5 +4,5 @@ import {sendWeeklyNewsSummary, sendSignUpEmail, sendAlertEmail} from "@/lib/inng
 
 export const { GET, POST, PUT } = serve({
     client: inngest,
-    functions: [sendSignUpEmail, sendWeeklyNewsSummary,sendAlertEmail],
+    functions: [sendSignUpEmail, sendWeeklyNewsSummary, sendAlertEmail],
 })

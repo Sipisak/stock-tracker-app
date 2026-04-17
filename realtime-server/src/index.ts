@@ -133,6 +133,13 @@ function connectFinnhub() {
                                         alertId
                                     }
                                 })
+                            }).then(async (res) => {
+                                        // 2. Přidáme lepší logování pro debuggování
+                                        if (!res.ok) {
+                                            console.error(`❌ Webhook na Vercelu vrátil chybu ${res.status}`);
+                                        } else {
+                                            console.log(`✅ Inngest webhook pro ${symbol} úspěšně odpálen!`);
+                                        }
                             }).catch(err => console.error(`❌ The Inngest trigger for the user failed ${userId}:`, err));
                         }
                     }
