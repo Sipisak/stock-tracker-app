@@ -3,7 +3,7 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
 
-const InputField = ({ name, label, placeholder, type = "text", register, error, validation, disabled, value }: FormInputProps) => {
+const InputField = ({ name, label, placeholder, type = "text", step, register, error, validation, disabled, value }: FormInputProps) => {
     return (
         <div className="space-y-2">
             <Label htmlFor={name} className="form-label">
@@ -12,6 +12,7 @@ const InputField = ({ name, label, placeholder, type = "text", register, error, 
             <Input
                 type={type}
                 id={name}
+                step={step}
                 placeholder={placeholder}
                 disabled={disabled}
                 value={value}
