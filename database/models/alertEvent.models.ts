@@ -41,9 +41,12 @@ const AlertEventSchema = new Schema<IAlertEvent>(
         reason: { type: String, default: null },
 
         timings: {
-            receivedAt: { type: Number },
-            evaluatedAt: { type: Number },
-            savedAt: { type: Number },
+            type: {
+                receivedAt: { type: Number, required: true },
+                evaluatedAt: { type: Number, required: true },
+                savedAt: { type: Number, required: true },
+            },
+            required: false
         }
     },
     { timestamps: true }

@@ -122,20 +122,21 @@ function connectFinnhub() {
                                 }
                             });
 
-                            try {
-                                await inngest.send({
-                                    name: "app/alert.triggered",
-                                    data: {
-                                        userId,
-                                        symbol,
-                                        price: currentPrice,
-                                        alertId
-                                    }
+                            inngest.send({
+                                name: "app/alert.triggered",
+                                data: {
+                                    userId,
+                                    symbol,
+                                    price: currentPrice,
+                                    alertId
+                                }
+                            })
+                                .then(() => {
+                                    console.log(`✅ Inngest event pro ${symbol} úspěšně odeslán do Cloudu!`);
+                                })
+                                .catch((err) => {
+                                    console.error(`❌ Chyba při odesílání do Inngest Cloudu pro usera ${userId}:`, err);
                                 });
-                                console.log(`✅ Inngest event pro ${symbol} úspěšně odeslán do Cloudu!`);
-                            } catch (inngestErr) {
-                                console.error(`❌ Chyba při odesílání do Inngest Cloudu:`, inngestErr);
-                            }
                         }
                     }
                 }

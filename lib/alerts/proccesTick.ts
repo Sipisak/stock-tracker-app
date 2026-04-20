@@ -78,7 +78,7 @@ export async function processTick(params: {
                 { new: true }
             ).lean() as any;
 
-            const t3 = Date.now();
+
 
             if (updated) {
                 await AlertEvent.create({
@@ -94,10 +94,10 @@ export async function processTick(params: {
                     timings: {
                         receivedAt: params.receivedAt,
                         evaluatedAt: t2,
-                        savedAt: t3
+                        savedAt: Date.now()
                     }
                 });
-
+                const t3 = Date.now();
                 triggeredCount += 1;
 
 
