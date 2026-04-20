@@ -16,6 +16,12 @@ export interface IAlertEvent {
     // Helps with dedupe + debugging
     reason?: string | null;
 
+    timings?: {
+        receivedAt: number;
+        evaluatedAt: number;
+        savedAt: number;
+    };
+
     createdAt: Date;
     updatedAt: Date;
 }
@@ -33,6 +39,12 @@ const AlertEventSchema = new Schema<IAlertEvent>(
         triggeredAt: { type: Date, required: true, index: true },
 
         reason: { type: String, default: null },
+
+        timings: {
+            receivedAt: { type: Number },
+            evaluatedAt: { type: Number },
+            savedAt: { type: Number },
+        }
     },
     { timestamps: true }
 );

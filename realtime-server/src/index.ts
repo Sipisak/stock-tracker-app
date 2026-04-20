@@ -5,9 +5,11 @@ import WebSocket from "ws";
 import { processTick } from "@/lib/alerts/proccesTick";
 import { connectToDatabase } from "@/database/mongoose";
 import {Alert} from "@/database/models/alert.model";
+import {Inngest} from "inngest";
 
 const PORT = Number(process.env.PORT || 4001);
 const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY;
+const inngest = new Inngest({ id: "signalist" });
 
 if (!FINNHUB_API_KEY) {
     console.error("❌ FINNHUB_API_KEY!");
@@ -120,11 +122,8 @@ function connectFinnhub() {
                                 }
                             });
 
-                            const NEXT_APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-                            fetch(`${NEXT_APP_URL}/api/inngest`, {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({
+                            try {
+                                await inngest.send({
                                     name: "app/alert.triggered",
                                     data: {
                                         userId,
@@ -132,15 +131,11 @@ function connectFinnhub() {
                                         price: currentPrice,
                                         alertId
                                     }
-                                })
-                            }).then(async (res) => {
-                                        // 2. Přidáme lepší logování pro debuggování
-                                        if (!res.ok) {
-                                            console.error(`❌ Webhook na Vercelu vrátil chybu ${res.status}`);
-                                        } else {
-                                            console.log(`✅ Inngest webhook pro ${symbol} úspěšně odpálen!`);
-                                        }
-                            }).catch(err => console.error(`❌ The Inngest trigger for the user failed ${userId}:`, err));
+                                });
+                                console.log(`✅ Inngest event pro ${symbol} úspěšně odeslán do Cloudu!`);
+                            } catch (inngestErr) {
+                                console.error(`❌ Chyba při odesílání do Inngest Cloudu:`, inngestErr);
+                            }
                         }
                     }
                 }
@@ -181,7 +176,6 @@ io.use(async (socket, next) => {
 
 io.on("connection", (socket) => {
     const verifiedUserId = socket.data.userId as string | undefined;
-
     if (verifiedUserId) {
         socket.join(`user:${verifiedUserId}`);
         console.log(`👤 User ${verifiedUserId} connected to his private room`);
