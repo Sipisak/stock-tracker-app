@@ -77,7 +77,7 @@ const AddAlertDialog = ({
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 pt-4">
                     <SelectField name="alertType" label="Alert Type" control={control} options={ALERT_TYPE_OPTIONS} error={errors.alertType} required />
                     <SelectField name="condition" label="Condition" control={control} options={CONDITION_OPTIONS} error={errors.condition} required />
-                    <InputField name="threshold" label="Threshold" placeholder="e.g., 150" type="number" register={register} error={errors.threshold} validation={{ required: 'Threshold is required', valueAsNumber: true }} />
+                    <InputField name="threshold" label="Threshold" placeholder="e.g., 150" type="number"  register={register} error={errors.threshold} validation={{ required: 'Threshold is required', valueAsNumber: true }} />
                     <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
                         {isSubmitting ? 'Creating Alert...' : 'Create Alert'}
                     </Button>

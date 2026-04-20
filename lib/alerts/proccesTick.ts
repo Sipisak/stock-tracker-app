@@ -91,6 +91,11 @@ export async function processTick(params: {
                     triggerPrice: params.currentValue,
                     triggeredAt: now,
                     reason: "threshold_crossing",
+                    timings: {
+                        receivedAt: params.receivedAt,
+                        evaluatedAt: t2,
+                        savedAt: t3
+                    }
                 });
 
                 triggeredCount += 1;
