@@ -50,7 +50,7 @@ const Watchlist = async () => {
                     {/* Záložka 1: Aktivní alerty */}
                     <TabsContent
                         value="active"
-                        className="flex-1 overflow-y-auto pr-2 custom-scrollbar outline-none"
+                        className="flex-1 overflow-y-auto pr-2 hide-scrollbar outline-none"
                     >
                         <AlertsList alerts={alerts} />
                     </TabsContent>
@@ -58,7 +58,7 @@ const Watchlist = async () => {
                     {/* Záložka 2: Historie proběhlých alertů */}
                     <TabsContent
                         value="history"
-                        className="flex-1 overflow-y-auto pr-2 custom-scrollbar outline-none"
+                        className="flex-1 overflow-y-auto pr-2 hide-scrollbar outline-none"
                     >
                         <AlertHistory />
                     </TabsContent>
