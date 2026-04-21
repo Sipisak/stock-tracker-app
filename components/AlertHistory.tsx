@@ -12,7 +12,7 @@ export default async function AlertHistory() {
     }
 
     return (
-        <div className="flex flex-col gap-3 pb-4 scrollbar-hide">
+        <div className="flex flex-col gap-3 p-3 bg-gray-800 rounded-lg border border-gray-600 overflow-y-auto max-h-[850px] scrollbar-hide">
             {history.map((event: any) => {
                 let latencyMsg = "-";
                 if (event.timings?.receivedAt && event.timings?.savedAt) {
