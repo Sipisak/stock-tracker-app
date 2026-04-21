@@ -12,7 +12,7 @@ export default async function AlertHistory() {
     }
 
     return (
-        <div className="flex flex-col gap-3 pb-4 hide-scrollbar">
+        <div className="flex flex-col gap-3 pb-4 scrollbar-hide">
             {history.map((event: any) => {
                 let latencyMsg = "-";
                 if (event.timings?.receivedAt && event.timings?.savedAt) {
@@ -29,7 +29,7 @@ export default async function AlertHistory() {
                         key={event._id}
                         className="p-4 rounded-lg bg-gray-800 border border-gray-600 transition-all hover:border-gray-500 group"
                     >
-                        {/* Symbol a Cena */}
+
                         <div className="flex items-center justify-between mb-1">
                             <span className="font-bold text-yellow-500 text-lg uppercase">
                                 {event.symbol}
@@ -39,13 +39,13 @@ export default async function AlertHistory() {
                             </span>
                         </div>
 
-                        {/* Podmínka */}
+
                         <div className="text-sm text-gray-400 mb-4">
                             {event.condition === 'upper' ? 'Price rose above' : 'Price dropped below'}{' '}
                             <span className="text-gray-100 font-medium">{event.threshold}</span>
                         </div>
 
-                        {/* Footer: Čas a Latence */}
+
                         <div className="flex items-center justify-between pt-3 border-t border-gray-700/50 text-[10px] uppercase tracking-wider text-gray-500">
                             <div className="flex gap-2">
                                 <span>{dateStr}</span>
