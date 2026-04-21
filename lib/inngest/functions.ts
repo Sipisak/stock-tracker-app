@@ -138,12 +138,21 @@ export const sendAlertEmail = inngest.createFunction(
         // 2. Načtení uživatele pro zjištění e-mailu (BetterAuth tabulka)
         const user = await step.run('fetch-user', async () => {
             const db = mongoose.connection;
-            return await db.collection('user').findOne({ id: userId });
-        });
+            
+            // Připravíme podmínky pro hledání (textové id, nebo textové _id)
+            const searchConditions: any[] = [
+                { id: userId },
+                { _id: userId }
+            ];
 
-        if (!user || !user.email) {
-            return { success: false, message: 'User or email not found' };
-        }
+            // Pokud je to validní formát pro MongoDB ObjectId, přidáme i ten
+            if (mongoose.Types.ObjectId.isValid(userId)) {
+                searchConditions.push({ _id: new mongoose.Types.ObjectId(userId) });
+            }
+
+            // Najde uživatele, ať už je uložený v jakémkoliv z těchto 3 formátů
+            return await db.collection('user').findOne({ $or: searchConditions });
+        });
 
         // 3. Načtení Alertu, abychom zjistili, jestli to je 'upper' nebo 'lower' a jaký byl target
         const alert = await step.run('fetch-alert', async () => {
