@@ -47,7 +47,7 @@ export default function EditAlertDialog({ alert }: { alert: any }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
+                <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white cursor-pointer">
                     <Pencil className="h-4 w-4" />
                 </Button>
             </DialogTrigger>
