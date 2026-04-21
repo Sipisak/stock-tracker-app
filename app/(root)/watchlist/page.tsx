@@ -41,24 +41,24 @@ const Watchlist = async () => {
             <aside className="watchlist-alerts">
                 <Tabs defaultValue="active" className="w-full h-full flex flex-col">
 
-                    {/* Přepínací tlačítka */}
+
                     <TabsList className="grid w-full grid-cols-2 mb-4 bg-[#1a1a1a] text-gray-400">
                         <TabsTrigger value="active">Active Alerts</TabsTrigger>
                         <TabsTrigger value="history">History</TabsTrigger>
                     </TabsList>
 
-                    {/* Záložka 1: Aktivní alerty */}
+
                     <TabsContent
                         value="active"
-                        className="flex-1 overflow-y-auto pr-2 hide-scrollbar outline-none"
+                        className="flex-1 overflow-y-auto pr-2 scrollbar-hide outline-none"
                     >
                         <AlertsList alerts={alerts} />
                     </TabsContent>
 
-                    {/* Záložka 2: Historie proběhlých alertů */}
+
                     <TabsContent
                         value="history"
-                        className="flex-1 overflow-y-auto pr-2 hide-scrollbar outline-none"
+                        className="flex-1 overflow-y-auto pr-2 scrollbar-hide outline-none"
                     >
                         <AlertHistory />
                     </TabsContent>
