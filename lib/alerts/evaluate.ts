@@ -8,14 +8,23 @@ export function didCrossThreshold(params: {
 }): boolean {
     const { condition, prev, current, threshold } = params;
 
-    // First tick: no previous value => don't trigger (avoids false positives)
-    if (prev === null || prev === undefined) return false;
-
-    if (condition === "upper") {
-        return prev <= threshold && current > threshold;
+    // 1. Úplně první tik: nemáme předchozí hodnotu (alert byl právě vytvořen)
+    if (prev === null || prev === undefined) {
+        // Pokud je aktuální cena už ZA hranicí, odpálíme alert rovnou!
+        if (condition === "upper" && current >= threshold) return true;
+        if (condition === "lower" && current <= threshold) return true;
+        return false;
     }
+
+    // 2. Klasické protnutí hranice
+    if (condition === "upper") {
+        // Cena byla pod hranicí a teď ji protnula (nebo se jí rovná)
+        return prev < threshold && current >= threshold;
+    }
+    
     // "lower" / BELOW
-    return prev >= threshold && current < threshold;
+    // Cena byla nad hranicí a teď klesla pod ni (nebo se jí rovná)
+    return prev > threshold && current <= threshold;
 }
 
 export function isCooldownOver(params: {
@@ -37,16 +46,14 @@ export function didCrossPercentThreshold(params: {
 }): boolean {
     const { condition, initial, current, threshold } = params;
 
-
+    // U procent MUSÍME ignorovat první tik, protože z jedné hodnoty procento nespočítáme
     if (initial === null || initial === undefined) return false;
-
 
     const percentChange = ((current - initial) / initial) * 100;
 
     if (condition === "upper") {
         return percentChange >= threshold;
     }
-
 
     return percentChange <= -Math.abs(threshold);
 }
