@@ -8,6 +8,7 @@ import { getFormattedTodayDate } from "@/lib/utils";
 import {connectToDatabase} from "@/database/mongoose";
 import { Alert } from "@/database/models/alert.model";
 import mongoose from "mongoose";
+import AlertEvent from "@/database/models/alertEvent.models";
 
 
 export const sendSignUpEmail = inngest.createFunction(
@@ -172,5 +173,29 @@ export const sendAlertEmail = inngest.createFunction(
         });
 
         return { success: true, message: `Alert email sent for ${symbol} to ${user.email}` };
+    }
+);
+
+export const cleanupOldAlertEvents = inngest.createFunction(
+    { id: 'cleanup-old-alert-events' },
+    { cron: '0 0 * * 0' },
+    async ({ step }) => {
+        await step.run('delete-old-events', async () => {
+            await connectToDatabase();
+
+            // Spočítáme datum před 30 dny
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+            // Smažeme všechny záznamy starší než tohle datum
+            const result = await AlertEvent.deleteMany({
+                createdAt: { $lt: thirtyDaysAgo }
+            });
+
+            console.log(`🧹 Úklid databáze: Smazáno ${result.deletedCount} starých alert eventů.`);
+            return result.deletedCount;
+        });
+
+        return { success: true, message: 'Database cleaned up' };
     }
 );
