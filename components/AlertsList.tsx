@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { Trash2 } from 'lucide-react';
 import { deleteAlert } from '@/lib/actions/alert.actions';
 import { toast } from 'sonner';
+import EditAlertDialog from "@/components/EditAlertDialog";
 
 const AlertsList = ({ alerts }: { alerts: IAlert[] }) => {
   const handleDelete = async (alertId: string) => {
@@ -52,9 +53,12 @@ const AlertsList = ({ alerts }: { alerts: IAlert[] }) => {
                     <p className="text-xs text-gray-500">
                       Created: {new Date(alert.createdAt).toLocaleDateString()}
                     </p>
-                    <Button variant="ghost" size="icon" className="alert-delete-btn" onClick={() => handleDelete(alert._id)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      <EditAlertDialog alert={alert} />
+                      <Button variant="ghost" size="icon" className="alert-delete-btn" onClick={() => handleDelete(alert._id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
             ))
