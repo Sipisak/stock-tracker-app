@@ -5,6 +5,8 @@ import { getAlertsForUser } from '@/lib/actions/alert.actions';
 import { getWatchlistWithData } from '@/lib/actions/watchlist.actions';
 import { WatchlistTable } from '@/components/WatchlistTable';
 import AlertsList from '@/components/AlertsList';
+import AlertHistory from '@/components/AlertHistory';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Watchlist = async () => {
     const watchlist = await getWatchlistWithData();
@@ -37,7 +39,31 @@ const Watchlist = async () => {
                 <WatchlistTable watchlist={watchlist} />
             </div>
             <aside className="watchlist-alerts">
-                <AlertsList alerts={alerts} />
+                <Tabs defaultValue="active" className="w-full h-full flex flex-col">
+
+                    {/* Přepínací tlačítka */}
+                    <TabsList className="grid w-full grid-cols-2 mb-4 bg-[#1a1a1a] text-gray-400">
+                        <TabsTrigger value="active">Active Alerts</TabsTrigger>
+                        <TabsTrigger value="history">History</TabsTrigger>
+                    </TabsList>
+
+                    {/* Záložka 1: Aktivní alerty */}
+                    <TabsContent
+                        value="active"
+                        className="flex-1 overflow-y-auto pr-2 custom-scrollbar outline-none"
+                    >
+                        <AlertsList alerts={alerts} />
+                    </TabsContent>
+
+                    {/* Záložka 2: Historie proběhlých alertů */}
+                    <TabsContent
+                        value="history"
+                        className="flex-1 overflow-y-auto pr-2 custom-scrollbar outline-none"
+                    >
+                        <AlertHistory />
+                    </TabsContent>
+
+                </Tabs>
             </aside>
         </section>
     );
