@@ -15,6 +15,7 @@ import InputField from '@/components/forms/InputField';
 import { ALERT_TYPE_OPTIONS, CONDITION_OPTIONS } from '@/lib/constants';
 import { updateAlert } from '@/lib/actions/alert.actions';
 import { toast } from 'sonner';
+import {Pencil} from "lucide-react";
 
 export default function EditAlertDialog({ alert }: { alert: any }) {
     const [open, setOpen] = useState(false);
@@ -46,9 +47,8 @@ export default function EditAlertDialog({ alert }: { alert: any }) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                {/* Tlačítko pro otevření úprav */}
-                <Button variant="outline" size="sm" className="ml-2">
-                    Edit
+                <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
+                    <Pencil className="h-4 w-4" />
                 </Button>
             </DialogTrigger>
             <DialogContent className="alert-dialog">

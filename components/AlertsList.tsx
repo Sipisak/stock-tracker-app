@@ -53,10 +53,12 @@ const AlertsList = ({ alerts }: { alerts: IAlert[] }) => {
                     <p className="text-xs text-gray-500">
                       Created: {new Date(alert.createdAt).toLocaleDateString()}
                     </p>
-                    <EditAlertDialog alert={alert} />
-                    <Button variant="ghost" size="icon" className="alert-delete-btn" onClick={() => handleDelete(alert._id)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      <EditAlertDialog alert={alert} />
+                      <Button variant="ghost" size="icon" className="alert-delete-btn" onClick={() => handleDelete(alert._id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
             ))
