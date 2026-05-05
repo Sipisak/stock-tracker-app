@@ -26,6 +26,12 @@ export const getAuth = async () => {
             autoSignIn: true,
 
         },
+        socialProviders: {
+            microsoft: {
+                clientId: process.env.MICROSOFT_CLIENT_ID as string,
+                clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
+            }
+        },
         plugins: [nextCookies()],
     });
 
