@@ -33,6 +33,13 @@ export const getAuth = async () => {
             }
         },
         plugins: [nextCookies()],
+
+        socialProviders: {
+            microsoft: {
+                clientId: process.env.MICROSOFT_CLIENT_ID as string,
+                clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
+            }
+        }
     });
 
     return authInstance;

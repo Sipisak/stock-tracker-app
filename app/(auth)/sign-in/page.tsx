@@ -46,7 +46,7 @@ const SignIn = () => {
         try {
             await signIn.social({
                 provider: "microsoft",
-                callbackURL: "/", // Kam se vrátit po úspěchu
+                callbackURL: "/",
             });
         } catch (error) {
             toast.error("Chyba při přesměrování na Microsoft.");
