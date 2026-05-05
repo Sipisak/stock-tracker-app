@@ -48,8 +48,8 @@ const SignIn = () => {
                 provider: "microsoft",
                 callbackURL: "/",
             });
-        } catch (error) {
-            toast.error("Chyba při přesměrování na Microsoft.");
+        } catch (e) {
+            toast.error("Error redirecting to Microsoft.");
         }
     };
 
@@ -103,7 +103,7 @@ const SignIn = () => {
                     variant="outline"
                     className="w-full h-12 border-gray-600 bg-gray-800 text-white hover:bg-gray-700 hover:text-white transition-colors flex items-center justify-center gap-2"
                 >
-                    <svg xmlns="http://www.w3.org/Plan/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#f25022" d="M1 1h10v10H1z"/><path fill="#00a4ef" d="M1 13h10v10H1z"/><path fill="#7fba00" d="M13 1h10v10H13z"/><path fill="#ffb900" d="M13 13h10v10H13z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#f25022" d="M1 1h10v10H1z"/><path fill="#00a4ef" d="M1 13h10v10H1z"/><path fill="#7fba00" d="M13 1h10v10H13z"/><path fill="#ffb900" d="M13 13h10v10H13z"/></svg>
                     Microsoft 365
                 </Button>
 
